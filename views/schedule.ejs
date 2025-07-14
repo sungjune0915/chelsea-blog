@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>첼시 경기 일정</title>
+  <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css' rel='stylesheet' />
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
+  <style>
+    #calendar {
+      max-width: 900px;
+      margin: 40px auto;
+    }
+    .fc-daygrid-event {
+    white-space: normal !important;
+    height: auto !important;
+    overflow: visible !important;
+    font-size: 0.9rem;
+    line-height: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center; margin-top: 20px;">📅 첼시 FC 2024-25 시즌 일정</h1>
+  <div id="calendar"></div>
+
+  <!-- ✅ events 데이터 JS에 삽입 -->
+  <script>
+    const matchEvents = <%- JSON.stringify(events) %>;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale: 'ko',
+        height: 650,
+        events: matchEvents
+      });
+      calendar.render();
+    });
+  </script>
+</body>
+</html>

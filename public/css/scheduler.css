@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  h1 {
+    margin-bottom: 10px;
+  }
+  
+  .navigation {
+    margin-bottom: 10px;
+  }
+  
+  .calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .day, .date {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .day {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+  
+  .date {
+    cursor: pointer;
+  }
+  
+  .date:hover {
+    background-color: #dceffd;
+  }
+  
+  #schedule {
+    margin-top: 20px;
+  }
+  
+  #taskList {
+    list-style: none;
+    padding: 0;
+  }
+  

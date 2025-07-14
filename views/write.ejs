@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <!-- Bootstrap 5 CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Summernote CSS -->
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-bs5.min.css" rel="stylesheet">
+<!-- jQuery 먼저 -->
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Summernote JS -->
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-bs5.min.js"></script>
+<!-- Favicon-->
+<link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+<!-- Core theme CSS (includes Bootstrap)-->
+<link href="css/styles.css" rel="stylesheet" />
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+          <img src="https://resources.premierleague.com/premierleague/badges/t8.png" alt="첼시 로고" width="35" height="35" style="margin-right: 10px; vertical-align: middle;" />
+          <a class="navbar-brand" href="#!">The Blues</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                  <li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>
+                  <% if (isLogin) { %>
+                      <li class="nav-item"><span class="nav-link">👋 <%= user.email %>님</span></li>
+                      <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    <% } else { %>
+                      <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                      <li class="nav-item"><a class="nav-link" href="/signUp">signUp</a></li>
+                    <% } %>
+              </ul>
+          </div>
+      </div>
+    </nav>
+    <div class="container mt-5">
+      <h2 class="mb-4">📝 게시글 작성</h2>
+      <form action="/board/savePost" method="POST">
+        <div class="mb-3">
+          <label class="form-label">카테고리</label>
+          <select name="category" class="form-select" required>
+            <option value="자유게시판">자유게시판</option>
+            <option value="경기토론">소식/뉴스</option>
+            <option value="정보공유">정보공유</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">제목</label>
+          <input type="text" name="title" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">내용</label>
+          <!-- ✅ summernote textarea -->
+          <textarea id="summernote" name="content" class="form-control" rows="10" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">작성 완료</button>
+        <a href="/board" class="btn btn-secondary">목록으로</a>
+      </form>
+    </div>
+    <footer class="py-5 bg-dark">
+      <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p></div>
+    </footer>
+    <script>
+      $(document).ready(function() {
+        $('#summernote').summernote({
+          placeholder: '내용을 입력하세요...',
+          height: 300,
+          lang: 'ko-KR',
+          callbacks: {
+            onImageUpload: function(files) {
+              for (let i = 0; i < files.length; i++) {
+                sendFile(files[i]);
+              }
+            }
+          }
+        });
+    
+        function sendFile(file) {
+          let formData = new FormData();
+          formData.append('file', file);
+    
+          $.ajax({
+            url: '/board/upload_image',  // 서버에 이미지 업로드
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(data) {
+              $('#summernote').summernote('insertImage', data.url);
+            },
+            error: function(err) {
+              alert('이미지 업로드 실패');
+              console.error(err);
+            }
+          });
+        }
+      });
+    </script>
+  </body>
